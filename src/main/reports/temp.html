@@ -328,13 +328,13 @@ for (var i = 1; i <= 3; i++) {
   } else if (i == 2) {
     var varChartType = "bar";
     var reportSegmentChart = "Row Summary";
-    charLabels = ['Common Row #', 'Row # in Src not in Tgt ', 'Row # in Tgt not in Src']
-    chartData = [6,12,09]; // Providing sample data for Summary chart
+    charLabels = ['# Common Rows', '# Rows in Src not in Tgt ', '# Rows in Tgt not in Src', '# Rows having no mismatch','# Rows having mismatch']
+    chartData = [45,34,23,40,5]; // Providing sample data for Summary chart
   } else {
     var varChartType = "bar";
     var reportSegmentChart = "Column Summary";
-    charLabels = ['Common Col #', 'Col # in Src not in Tgt ', 'Col # in Tgt not in Src']
-    chartData = [60,6,9]; // Providing sample data for Summary chart
+    charLabels = ['# Common Cols', '# Cols in Src not in Tgt ', '# Cols in Tgt not in Src','# Cols having no mismatch','# Cols having mismatch']
+    chartData = [60,6,9,58,2]; // Providing sample data for Summary chart
   }
 
   var chart = new Chart(chartCanvas, {

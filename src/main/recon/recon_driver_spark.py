@@ -9,7 +9,7 @@ spark = SparkSession \
 df1 = spark.read\
           .option("header",True)\
           .option("inferSchema",True)\
-          .csv("/Users/ashok/PycharmProjects/recon_utility/src/main/data/Stores.csv")
+          .csv("/Users/ashok/PycharmProjects/recon_utility/src/main/data/Driver_Config.csv")
 
 df2 = spark.read\
           .option("header",True)\
