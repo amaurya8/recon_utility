@@ -51,6 +51,13 @@
 
     }
 
+   .middle.collapsed {
+    height: 0; /* Collapse the middle section */
+   padding: 0; /* Optionally, remove padding when collapsed */
+   border-color: #FF6347; /* Change border color when collapsed */
+   border-width: 2px; /* Change border thickness when collapsed */
+    }
+
     .left-half,
     .right-half {
       flex: 1; /* Divide the middle section into equal halves */
@@ -63,6 +70,13 @@
       width: 100.00vw;
       background-color: #d9d9d9;
       border: 1px double #000; /* Add 2-lined border to both halves */
+    }
+
+       .bottom.collapsed {
+    height: 0; /* Collapse the middle section */
+   padding: 0; /* Optionally, remove padding when collapsed */
+   border-color: #008080; /* Change border color when collapsed */
+   border-width: 2px; /* Change border thickness when collapsed */
     }
 
     .chart-container {
@@ -127,19 +141,18 @@
 
   </style>
     <script>
-    function toggleBottom() {
-      var bottomSection = document.querySelector('.bottom');
-      var hiddenTable = document.querySelector('.hidden-table');
+        function toggleMiddle() {
+            var middleSection = document.querySelector('.middle');
+            middleSection.classList.toggle('collapsed');
+        }
+    </script>
 
-      if (bottomSection.style.display === 'none' || bottomSection.style.display === '') {
-        bottomSection.style.display = 'block';
-        hiddenTable.style.display = 'none'; // Hide the additional table
-      } else {
-        bottomSection.style.display = 'none';
-        hiddenTable.style.display = 'block'; // Show the additional table
-      }
-    }
-  </script>
+    <script>
+        function toggleBottom() {
+            var middleSection = document.querySelector('.bottom');
+            middleSection.classList.toggle('collapsed');
+        }
+    </script>
 </head>
 <body>
 <div class="container">
@@ -164,7 +177,7 @@
                 <canvas id="chart3"></canvas>
             </div>
     </div>
-    <div class="middle">
+    <div class="middle" onclick="toggleMiddle()">
         <!-- Content for the middle section -->
         <div class="left-half">
                 <h3>Row Comparison Stats</h3>
@@ -175,11 +188,11 @@
                         <th>Value</th>
                     </tr>
                     <tr>
-                        <td>Number of rows with some compared columns unequal</td>
+                        <td>Absolute Tolerance</td>
                         <td>3</td>
                     </tr>
                     <tr>
-                        <td>Number of rows with all compared columns equal</td>
+                        <td>Relative Tolerance</td>
                         <td>1</td>
                     </tr>
                     <tr>
@@ -258,7 +271,7 @@
             </div>
         </div>
     </div>
-    <div class="bottom">
+    <div class="bottom" onclick="toggleBottom()">
         <h2>Rows with un-eq values</h2>
         <table>
             <tr>
@@ -287,9 +300,6 @@
                 <td>NaN</td>
             </tr>
         </table>
-    </div>
-    <button class="collapsible-btn" onclick="toggleBottom()">Rows with un-eq values</button>
-</div>
     </div>
     <div class="last_bottom">
         <h2>Sample Rows Only in original (First 10 Columns)</h2>
