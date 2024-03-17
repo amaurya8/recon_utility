@@ -63,6 +63,8 @@
       flex: 1; /* Divide the middle section into equal halves */
       padding: 5px; /* Add padding to both halves */
       border: 1px double #000; /* Add 2-lined border to both halves */
+      overflow-x: auto; /* Enable horizontal scrolling */
+
     }
 
     .bottom {
@@ -210,64 +212,84 @@
             <h3> Columns with un-eq values / types </h3>
             <!-- Wrap the table in a scrollable div -->
             <div class="scrollable">
-            <table>
-                <tr>
-                    <th>Column</th>
-                    <th>Src Dtype</th>
-                    <th>Tgt Dtype</th>
-                    <th># Unequal</th>
-                    <th>Max Diff</th>
-                    <th># Null Diff</th>
-                </tr>
-                <tr>
-                    <td>dollar_amt</td>
-                    <td>float64</td>
-                    <td>float64</td>
-                    <td>1</td>
-                    <td>0.0500</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>float_fld</td>
-                    <td>float64</td>
-                    <td>float64</td>
-                    <td>4</td>
-                    <td>0.0005</td>
-                    <td>3</td>
-                </tr>
-                <tr>
-                    <td>name</td>
-                    <td>object</td>
-                    <td>object</td>
-                    <td>2</td>
-                    <td>0.0000</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>column1</td>
-                    <td>int64</td>
-                    <td>int64</td>
-                    <td>5</td>
-                    <td>0.0025</td>
-                    <td>2</td>
-                </tr>
-                <tr>
-                    <td>column2</td>
-                    <td>float64</td>
-                    <td>float64</td>
-                    <td>2</td>
-                    <td>0.0010</td>
-                    <td>1</td>
-                </tr>
-                <tr>
-                    <td>column3</td>
-                    <td>object</td>
-                    <td>object</td>
-                    <td>3</td>
-                    <td>0.0003</td>
-                    <td>0</td>
-                </tr>
-            </table>
+            <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>column</th>
+      <th>match_column</th>
+      <th>match_cnt</th>
+      <th>unequal_cnt</th>
+      <th>dtype1</th>
+      <th>dtype2</th>
+      <th>all_match</th>
+      <th>max_diff</th>
+      <th>null_diff</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>store_id</td>
+      <td></td>
+      <td>896</td>
+      <td>0</td>
+      <td>int32</td>
+      <td>int32</td>
+      <td>True</td>
+      <td>0.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>store_area</td>
+      <td>store_area_match</td>
+      <td>891</td>
+      <td>5</td>
+      <td>int32</td>
+      <td>int32</td>
+      <td>False</td>
+      <td>111.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>items_available</td>
+      <td>items_available_match</td>
+      <td>896</td>
+      <td>0</td>
+      <td>int32</td>
+      <td>int32</td>
+      <td>True</td>
+      <td>0.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>daily_customer_count</td>
+      <td>daily_customer_count_match</td>
+      <td>896</td>
+      <td>0</td>
+      <td>int32</td>
+      <td>int32</td>
+      <td>True</td>
+      <td>0.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>store_sales</td>
+      <td>store_sales_match</td>
+      <td>896</td>
+      <td>0</td>
+      <td>int32</td>
+      <td>int32</td>
+      <td>True</td>
+      <td>0.0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
             </div>
         </div>
     </div>

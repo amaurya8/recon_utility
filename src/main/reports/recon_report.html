@@ -12,41 +12,50 @@
       display: flex;
       flex-direction: column;
     }
-    .topHeader{
-      height: 4.00vh;
-      width: 100.00vw;
-      background-color: #FF6347;
-      border-bottom: 1px solid #ccc;
-      display: flex;
-      justify-content: center;
-      padding: 10px;
-      font-size: 24px;
-      font-weight: bold;
-    }
+.topHeader {
+  height: 4.00vh;
+  width: 100.00vw;
+      background-color: #20B2AA;
+
+<!--    background-color: #008080; -->
+<!--#A9A9A9 &#45;&#45; dark greay-->
+<!--  background-color: #FF6347;--> original orange
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0; /* Adjust the padding */
+  font-size: 24px;
+  font-weight: bold;
+}
+
      .logo {
       width: 50px;
       margin-right: 10px;
     }
-
-    .top {
-      height: 40.00vh;
-      width: 100.00vw;
-      background-color: #f2f2f2;
-<!--      border-bottom: 1px solid #ccc;-->
-      border: 3px double #000; /* Add 2-lined border to both halves */
-     display: flex;
-    flex-direction: row;
-<!--    margin: auto; /*These will make the item in center*/-->
-     padding: 10px;
-    }
+.top {
+  height: 40.00vh;
+  width: 100.00vw;
+  background-color: #f2f2f2;
+  border: 3px double rgba(0, 0, 0, 0); /* Transparent double-lined border */
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start; /* Adjust the value here */
+   margin-bottom: 10px; /* Add margin to the bottom of the top section */
+}
     .middle {
       display: flex;
       height: 33.33vh;
       width: 100.00vw;
       background-color: #e6e6e6;
-<!--      border-bottom: 1px solid #ccc;-->
-      border: 3px double #000; /* Add 2-lined border to both halves */
+      border: 1px double #000; /* Add 2-lined border to both halves */
 
+    }
+
+   .middle.collapsed {
+    height: 0; /* Collapse the middle section */
+   padding: 0; /* Optionally, remove padding when collapsed */
+   border-color: #FF6347; /* Change border color when collapsed */
+   border-width: 2px; /* Change border thickness when collapsed */
     }
 
     .left-half,
@@ -60,7 +69,14 @@
       height: 33.33vh;
       width: 100.00vw;
       background-color: #d9d9d9;
-      border: 3px double #000; /* Add 2-lined border to both halves */
+      border: 1px double #000; /* Add 2-lined border to both halves */
+    }
+
+       .bottom.collapsed {
+    height: 0; /* Collapse the middle section */
+   padding: 0; /* Optionally, remove padding when collapsed */
+   border-color: #008080; /* Change border color when collapsed */
+   border-width: 2px; /* Change border thickness when collapsed */
     }
 
     .chart-container {
@@ -125,19 +141,18 @@
 
   </style>
     <script>
-    function toggleBottom() {
-      var bottomSection = document.querySelector('.bottom');
-      var hiddenTable = document.querySelector('.hidden-table');
+        function toggleMiddle() {
+            var middleSection = document.querySelector('.middle');
+            middleSection.classList.toggle('collapsed');
+        }
+    </script>
 
-      if (bottomSection.style.display === 'none' || bottomSection.style.display === '') {
-        bottomSection.style.display = 'block';
-        hiddenTable.style.display = 'none'; // Hide the additional table
-      } else {
-        bottomSection.style.display = 'none';
-        hiddenTable.style.display = 'block'; // Show the additional table
-      }
-    }
-  </script>
+    <script>
+        function toggleBottom() {
+            var middleSection = document.querySelector('.bottom');
+            middleSection.classList.toggle('collapsed');
+        }
+    </script>
 </head>
 <body>
 <div class="container">
@@ -162,28 +177,34 @@
                 <canvas id="chart3"></canvas>
             </div>
     </div>
-    <div class="middle">
+    <div class="middle" ondblclick="toggleMiddle()">
         <!-- Content for the middle section -->
         <div class="left-half">
-                <h3>Column Comparison</h3>
+                <h3>Row Comparison Stats</h3>
+                <div class="scrollable">
                 <table>
                     <tr>
                         <th>Description</th>
                         <th>Value</th>
                     </tr>
                     <tr>
-                        <td>Number of columns compared with some values unequal:</td>
+                        <td>Absolute Tolerance</td>
                         <td>3</td>
                     </tr>
                     <tr>
-                        <td>Number of columns compared with all values equal:</td>
+                        <td>Relative Tolerance</td>
                         <td>1</td>
                     </tr>
                     <tr>
-                        <td>Total number of values which compare unequal:</td>
-                        <td>7</td>
+                        <td>Matched Keys</td>
+                        <td>[StoreKey,StoreName]</td>
+                    </tr>
+                                        <tr>
+                        <td>Any duplicates on match values</td>
+                        <td>No</td>
                     </tr>
                 </table>
+                </div>
             </div>
         <div class="right-half">
             <h3> Columns with un-eq values / types </h3>
@@ -192,8 +213,8 @@
             <table>
                 <tr>
                     <th>Column</th>
-                    <th>Original Dtype</th>
-                    <th>New Dtype</th>
+                    <th>Src Dtype</th>
+                    <th>Tgt Dtype</th>
                     <th># Unequal</th>
                     <th>Max Diff</th>
                     <th># Null Diff</th>
@@ -250,13 +271,13 @@
             </div>
         </div>
     </div>
-    <div class="bottom">
+    <div class="bottom" ondblclick="toggleBottom()">
         <h2>Rows with un-eq values</h2>
         <table>
             <tr>
                 <th>acct_id</th>
-                <th>float_fld (original)</th>
-                <th>float_fld (new)</th>
+                <th>float_fld (Src)</th>
+                <th>float_fld (Tgt)</th>
             </tr>
             <tr>
                 <td>10000001234</td>
@@ -279,9 +300,6 @@
                 <td>NaN</td>
             </tr>
         </table>
-    </div>
-    <button class="collapsible-btn" onclick="toggleBottom()">Rows with un-eq values</button>
-</div>
     </div>
     <div class="last_bottom">
         <h2>Sample Rows Only in original (First 10 Columns)</h2>
@@ -313,25 +331,27 @@ for (var i = 1; i <= 3; i++) {
   var chartData;
 
   if (i == 1) {
-    var varChartType = "bar";
+    var varChartType = "line";
     var reportSegmentChart = "Summary";
     chartData = [20000000, 10000000, 15000000, 1000000]; // Providing sample data for Summary chart
+    charLabels = ['Src Row Count', 'Src Col Count ', 'Tgt Row Count', 'Tgt Col Count']
   } else if (i == 2) {
     var varChartType = "bar";
     var reportSegmentChart = "Row Summary";
-    chartData = [5, 3, 6, 2]; // Providing sample data for Row Summary chart
+    charLabels = ['# Common Rows', '# Rows in Src not in Tgt ', '# Rows in Tgt not in Src', '# Rows having no mismatch','# Rows having mismatch']
+    chartData = [45,34,23,40,5]; // Providing sample data for Summary chart
   } else {
     var varChartType = "bar";
     var reportSegmentChart = "Column Summary";
-    chartData = [1, 4, 7, 3]; // Providing sample data for Column Summary chart
+    charLabels = ['# Common Cols', '# Cols in Src not in Tgt ', '# Cols in Tgt not in Src','# Cols having no mismatch','# Cols having mismatch']
+    chartData = [60,6,9,58,2]; // Providing sample data for Summary chart
   }
 
   var chart = new Chart(chartCanvas, {
     type: varChartType,
     data: {
-      labels: ['Src Row Count', 'Src Col Count ', 'Tgt Row Count', 'Tgt Col Count'],
+      labels: charLabels,
       datasets: [{
-        label: 'Dataset ' + i,
         data: chartData,
         backgroundColor: 'rgba(75, 192, 192, 0.5)',
         borderColor: 'rgba(75, 192, 192, 1)',
@@ -355,10 +375,14 @@ for (var i = 1; i <= 3; i++) {
           mode: 'index',
           intersect: false
         }
-      }
+      },
+      cutout: '60%',
+      barThickness: 50
     }
   });
-
+  if (i === 1 || i === 2 || i===3) {
+    document.querySelector('.chart-container:nth-child(' + i + ')').style.border = 'none'; // Remove border from the chart container
+  }
   charts.push(chart);
 }
 
