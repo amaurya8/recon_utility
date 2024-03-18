@@ -75,14 +75,12 @@ df_col_with_uneq_values_types = pd.DataFrame.from_dict(comparison.column_stats)
 all_mismatch = comparison.all_mismatch()
 print(all_mismatch)
 
-total_cols_in_diff = len(all_mismatch.columns) - 1
-
 def highlight_diff(x):
     styles = [''] * len(x)
     for i in range(1, len(x), 2):  # Starting from index 1 and comparing alternate adjacent columns
         if x.iloc[i] != x.iloc[i + 1]:
-            styles[i] = 'background-color: yellow'
-            styles[i + 1] = 'background-color: yellow'
+            styles[i] = 'background-color: #FF6347'
+            styles[i + 1] = 'background-color: #FF6347'
     return styles
 
 # Apply the custom function to the DataFrame
