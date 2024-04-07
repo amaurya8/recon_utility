@@ -17,9 +17,9 @@ df2 = spark.read\
           .option("header",True)\
           .option("inferSchema",True)\
           .csv("/Users/ashok/PycharmProjects/recon_utility/src/main/data/Stores_new.csv")
-# print(spark.version)
-df1.show()
-df2.show(10)
+# # print(spark.version)
+# df1.show()
+# df2.show(10)
 
 base_df = df1.toPandas()
 compare_df = df2.toPandas()
@@ -58,12 +58,12 @@ for element in col_stats:
         cols_having_mismatch = cols_having_mismatch + 1
 
 
-matched_keys = comparison.join_columns
-absolute_tole = comparison.abs_tol
-relative_tole = comparison.rel_tol
+matched_keys = comparison.join_columns.__str__()
+absolute_tole = str(comparison.abs_tol)
+relative_tole = str(comparison.rel_tol)
 
-dupe_row_in_src = pd.merge(comparison.df1_unq_rows , comparison.intersect_rows,on=matched_keys, how='inner')
-dupe_row_in_tgt = pd.merge(comparison.df2_unq_rows , comparison.intersect_rows,on=matched_keys, how='inner')
+dupe_row_in_src = pd.merge(comparison.df1_unq_rows , comparison.intersect_rows,on='store_id', how='inner')
+dupe_row_in_tgt = pd.merge(comparison.df2_unq_rows , comparison.intersect_rows,on='store_id', how='inner')
 dupe_row_in_src_count = dupe_row_in_src.shape[0]
 dupe_row_in_tgt = dupe_row_in_tgt.shape[0]
 spaces_ignored = comparison.ignore_spaces
@@ -71,9 +71,7 @@ spaces_ignored = comparison.ignore_spaces
 df_col_with_uneq_values_types = pd.DataFrame.from_dict(comparison.column_stats)
 # print(df_col_with_uneq_values_types.to_html())
 
-
 all_mismatch = comparison.all_mismatch()
-print(all_mismatch)
 
 def highlight_diff(x):
     styles = [''] * len(x)
@@ -90,4 +88,18 @@ styled_df.hide(axis=0)
 
 # Display the styled DataFrame
 styled_html = styled_df._repr_html_()
-print(styled_html)
+# print(styled_html)
+
+########################### generating report ##########################
+
+with open('recon_report_dynamic.html', 'r') as input_report_file , open('recon_report_final.html', 'w') as output_report_file:
+    html_report = input_report_file.read()
+    html_report = html_report.replace("#absolute_tole#", absolute_tole)
+    html_report = html_report.replace("#relative_tole#", relative_tole)
+    html_report = html_report.replace("#matched_keys#", matched_keys)
+    html_report = html_report.replace("#Columns with un-eq values / types#", df_col_with_uneq_values_types.to_html().__str__())
+    html_report = html_report.replace("#Rows with un-eq values#", styled_html)
+    html_report = html_report.replace("#Rows Only In Src#", comparison.df1_unq_rows.to_html().__str__())
+    html_report = html_report.replace("#Rows Only In Tgt#", comparison.df2_unq_rows.to_html().__str__())
+
+    output_report_file.write(html_report)
