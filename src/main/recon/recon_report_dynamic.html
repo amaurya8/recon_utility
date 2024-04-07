@@ -247,18 +247,18 @@ for (var i = 1; i <= 3; i++) {
   if (i == 1) {
     var varChartType = "line";
     var reportSegmentChart = "Summary";
-    chartData = [20000000, 10000000, 15000000, 1000000]; // Providing sample data for Summary chart
+    chartData = #Summary Chart#; // Providing sample data for Summary chart
     charLabels = ['Src Row Count', 'Src Col Count ', 'Tgt Row Count', 'Tgt Col Count']
   } else if (i == 2) {
-    var varChartType = "bar";
+    var varChartType = "pie";
     var reportSegmentChart = "Row Summary";
     charLabels = ['# Common Rows', '# Rows in Src not in Tgt ', '# Rows in Tgt not in Src', '# Rows having no mismatch','# Rows having mismatch']
-    chartData = [45,34,23,40,5]; // Providing sample data for Summary chart
+    chartData = #Row Summary#; // Providing sample data for Summary chart
   } else {
-    var varChartType = "bar";
+    var varChartType = "pie";
     var reportSegmentChart = "Column Summary";
     charLabels = ['# Common Cols', '# Cols in Src not in Tgt ', '# Cols in Tgt not in Src','# Cols having no mismatch','# Cols having mismatch']
-    chartData = [60,6,9,58,2]; // Providing sample data for Summary chart
+    chartData = #Column Summary#; // Providing sample data for Summary chart
   }
 
   var chart = new Chart(chartCanvas, {

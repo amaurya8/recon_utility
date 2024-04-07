@@ -57,6 +57,9 @@ for element in col_stats:
     else:
         cols_having_mismatch = cols_having_mismatch + 1
 
+summary_chart_data = [src_col_count,src_col_count,tgt_row_count,tgt_col_count]
+row_summary_data = [common_rows_count,rows_in_src_only,rows_in_tgt_only,row_having_no_mismatch,rows_having_mismatch]
+col_summary_data = [common_cols_count,cols_in_src_only_count,cols_in_tgt_only,cols_having_no_mismatch,cols_having_mismatch]
 
 matched_keys = comparison.join_columns.__str__()
 absolute_tole = str(comparison.abs_tol)
@@ -101,5 +104,8 @@ with open('recon_report_dynamic.html', 'r') as input_report_file , open('recon_r
     html_report = html_report.replace("#Rows with un-eq values#", styled_html)
     html_report = html_report.replace("#Rows Only In Src#", comparison.df1_unq_rows.to_html().__str__())
     html_report = html_report.replace("#Rows Only In Tgt#", comparison.df2_unq_rows.to_html().__str__())
+    html_report = html_report.replace("#Summary Chart#", summary_chart_data.__str__())
+    html_report = html_report.replace("#Row Summary#", row_summary_data.__str__())
+    html_report = html_report.replace("#Column Summary#", col_summary_data.__str__())
 
     output_report_file.write(html_report)
