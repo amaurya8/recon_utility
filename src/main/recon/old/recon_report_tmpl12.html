@@ -135,10 +135,10 @@
       margin-top: 10px;
     }
     .last_bottom {
-      height: 33.33vh;
+<!--      height: 33.33vh;-->
       width: 100.00vw;
       background-color: #d9d9d9;
-      border: 3px double #000; /* Add 2-lined border to both halves */
+      border: 1px double #000; /* Add 2-lined border to both halves */
     }
 
   </style>
@@ -191,15 +191,15 @@
                     </tr>
                     <tr>
                         <td>Absolute Tolerance</td>
-                        <td>3</td>
+                        <td>#absolute_tole#</td>
                     </tr>
                     <tr>
                         <td>Relative Tolerance</td>
-                        <td>1</td>
+                        <td>#relative_tole#</td>
                     </tr>
                     <tr>
                         <td>Matched Keys</td>
-                        <td>[StoreKey,StoreName]</td>
+                        <td>#matched_keys#</td>
                     </tr>
                                         <tr>
                         <td>Any duplicates on match values</td>
@@ -212,136 +212,28 @@
             <h3> Columns with un-eq values / types </h3>
             <!-- Wrap the table in a scrollable div -->
             <div class="scrollable">
-            <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>column</th>
-      <th>match_column</th>
-      <th>match_cnt</th>
-      <th>unequal_cnt</th>
-      <th>dtype1</th>
-      <th>dtype2</th>
-      <th>all_match</th>
-      <th>max_diff</th>
-      <th>null_diff</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>store_id</td>
-      <td></td>
-      <td>896</td>
-      <td>0</td>
-      <td>int32</td>
-      <td>int32</td>
-      <td>True</td>
-      <td>0.0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>store_area</td>
-      <td>store_area_match</td>
-      <td>891</td>
-      <td>5</td>
-      <td>int32</td>
-      <td>int32</td>
-      <td>False</td>
-      <td>111.0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>items_available</td>
-      <td>items_available_match</td>
-      <td>896</td>
-      <td>0</td>
-      <td>int32</td>
-      <td>int32</td>
-      <td>True</td>
-      <td>0.0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>daily_customer_count</td>
-      <td>daily_customer_count_match</td>
-      <td>896</td>
-      <td>0</td>
-      <td>int32</td>
-      <td>int32</td>
-      <td>True</td>
-      <td>0.0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>store_sales</td>
-      <td>store_sales_match</td>
-      <td>896</td>
-      <td>0</td>
-      <td>int32</td>
-      <td>int32</td>
-      <td>True</td>
-      <td>0.0</td>
-      <td>0</td>
-    </tr>
-  </tbody>
-</table>
+           #Columns with un-eq values / types#
             </div>
         </div>
     </div>
     <div class="bottom" ondblclick="toggleBottom()">
         <h2>Rows with un-eq values</h2>
-        <table>
-            <tr>
-                <th>acct_id</th>
-                <th>float_fld (Src)</th>
-                <th>float_fld (Tgt)</th>
-            </tr>
-            <tr>
-                <td>10000001234</td>
-                <td>14530.1555</td>
-                <td>14530.155</td>
-            </tr>
-            <tr>
-                <td>10000001238</td>
-                <td>NaN</td>
-                <td>111.000</td>
-            </tr>
-            <tr>
-                <td>10000001236</td>
-                <td>NaN</td>
-                <td>1.000</td>
-            </tr>
-            <tr>
-                <td>10000001235</td>
-                <td>1.0000</td>
-                <td>NaN</td>
-            </tr>
-        </table>
+                <div class="scrollable">
+        #Rows with un-eq values#
+                </div>
     </div>
     <div class="last_bottom">
-        <h2>Sample Rows Only in original (First 10 Columns)</h2>
-        <table>
-            <tr>
-                <th>acct_id</th>
-                <th>dollar_amt</th>
-                <th>name</th>
-                <th>float_fld</th>
-                <th>date_fld</th>
-            </tr>
-            <tr>
-                <td>10000001238</td>
-                <td>1.05</td>
-                <td>Lucille Bluth</td>
-                <td>NaN</td>
-                <td>2017-01-01</td>
-            </tr>
-        </table>
-</div>
+        <h2> Rows Only in Src (Default - 10 Rows/Cols) </h2>
+        <div class="scrollable">
+       #Rows Only In Src#
+        </div>
+    </div>
+    <div class="last_bottom">
+        <h2> Rows Only in Tgt (Default - 10 Rows/Cols) </h2>
+        <div class="scrollable">
+       #Rows Only In Tgt#
+        </div>
+    </div>
 <!--</div>-->
 </div>
 <script>
@@ -355,18 +247,19 @@ for (var i = 1; i <= 3; i++) {
   if (i == 1) {
     var varChartType = "line";
     var reportSegmentChart = "Summary";
-    chartData = [20000000, 10000000, 15000000, 1000000]; // Providing sample data for Summary chart
+    chartData = #Summary Chart#; // Providing sample data for Summary chart
     charLabels = ['Src Row Count', 'Src Col Count ', 'Tgt Row Count', 'Tgt Col Count']
   } else if (i == 2) {
-    var varChartType = "bar";
+    var varChartType = "doughnut";
     var reportSegmentChart = "Row Summary";
     charLabels = ['# Common Rows', '# Rows in Src not in Tgt ', '# Rows in Tgt not in Src', '# Rows having no mismatch','# Rows having mismatch']
-    chartData = [45,34,23,40,5]; // Providing sample data for Summary chart
+    chartData = #Row Summary#; // Providing sample data for Summary chart
   } else {
-    var varChartType = "bar";
+    var varChartType = "pie";
     var reportSegmentChart = "Column Summary";
     charLabels = ['# Common Cols', '# Cols in Src not in Tgt ', '# Cols in Tgt not in Src','# Cols having no mismatch','# Cols having mismatch']
-    chartData = [60,6,9,58,2]; // Providing sample data for Summary chart
+    chartData = #Column Summary#; // Providing sample data for Summary chart
+    var customColors = ['LightGoldenRodYellow', 'DarkGray', 'blue', 'MediumAquaMarine', 'DarkCyan']; // Custom colors for slices
   }
 
   var chart = new Chart(chartCanvas, {
@@ -375,7 +268,7 @@ for (var i = 1; i <= 3; i++) {
       labels: charLabels,
       datasets: [{
         data: chartData,
-        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+        backgroundColor: customColors,
         borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1
       }]
@@ -398,7 +291,7 @@ for (var i = 1; i <= 3; i++) {
           intersect: false
         }
       },
-      cutout: '60%',
+      cutout: i == 2 ? '50%' : undefined, // Set cutout for doughnut chart only
       barThickness: 50
     }
   });

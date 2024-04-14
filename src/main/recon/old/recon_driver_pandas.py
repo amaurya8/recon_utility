@@ -95,7 +95,7 @@ styled_html = styled_df._repr_html_()
 
 ########################### generating report ##########################
 
-with open('recon_report_dynamic.html', 'r') as input_report_file , open('recon_report_final.html', 'w') as output_report_file:
+with open('/Users/ashok/PycharmProjects/recon_utility/src/main/recon/old/recon_report_tmpl12.html', 'r') as input_report_file , open('recon_report_final.html', 'w') as output_report_file:
     html_report = input_report_file.read()
     html_report = html_report.replace("#absolute_tole#", absolute_tole)
     html_report = html_report.replace("#relative_tole#", relative_tole)
