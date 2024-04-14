@@ -1,6 +1,6 @@
 import pandas as pd
 
-class Make_My_Report:
+class MakeMyReport:
     def __init__(self, comparison,df1,df2,init_configs):
         self.comparison = comparison
         self.df1 = df1

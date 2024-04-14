@@ -22,6 +22,6 @@ input_src_df = pd.read_csv(src_input_base_path + "/" + config_df['Src_Detail'].v
 input_tgt_df = pd.read_csv(tgt_input_base_path + '/' + config_df['Tgt_Detail'].values[0])
 
 comparison = datacompy.Compare(input_src_df, input_tgt_df, join_columns =  ['Store_ID'])
-report_obj = report.Make_My_Report(comparison,input_src_df,input_tgt_df,init_configs)
+report_obj = report.MakeMyReport(comparison, input_src_df, input_tgt_df, init_configs)
 report_obj.recon_report()
 print('## Recon Completed ...! ##')
