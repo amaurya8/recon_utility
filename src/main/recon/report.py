@@ -1,5 +1,5 @@
 import pandas as pd
-
+import datetime
 class MakeMyReport:
     def __init__(self, comparison,df1,df2,init_configs):
         self.comparison = comparison
@@ -61,7 +61,11 @@ class MakeMyReport:
         # print(styled_html)
 
         ########################### generating report ##########################
-        recon_report = '../reports/recon_report' + "_" + self.init_configs.src_system + "_" + self.init_configs.tgt_system + ".html"
+        now = datetime.datetime.now()
+        date_str = now.strftime("%Y-%m-%d")  # Format: YYYY-MM-DD
+        time_str = now.strftime("%H:%M:%S")  # Format: HH:MM:SS
+        datetime_str = f"_{date_str}:{time_str}"
+        recon_report = '../reports/recon_report' + "_" + self.init_configs.src_system + "_" + self.init_configs.tgt_system + datetime_str + ".html"
         with open('../reports/recon_report_tmpl.html', 'r') as input_report_file, open(recon_report,
                                                                                'w') as output_report_file:
             html_report = input_report_file.read()
