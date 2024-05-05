@@ -41,13 +41,16 @@ class MakeMyReport:
         matched_keys = self.comparison.join_columns.__str__()
         absolute_tole = str(self.comparison.abs_tol)
         relative_tole = str(self.comparison.rel_tol)
+        dupe_row_in_src_count = 0
+        dupe_row_in_tgt_count = 0
+        if not self.comparison.df1_unq_rows.empty:
+            dupe_row_in_src = pd.merge(self.comparison.df1_unq_rows, self.comparison.intersect_rows, on=self.init_configs.join_col_list, how='inner')
+            dupe_row_in_src_count = dupe_row_in_src.shape[0]
+        if not self.comparison.df2_unq_rows.empty:
+            dupe_row_in_tgt = pd.merge(self.comparison.df2_unq_rows, self.comparison.intersect_rows, on=['store_id'], how='inner')
+            dupe_row_in_tgt_count = dupe_row_in_tgt.shape[0]
 
-        dupe_row_in_src = pd.merge(self.comparison.df1_unq_rows, self.comparison.intersect_rows, on='store_id', how='inner')
-        dupe_row_in_tgt = pd.merge(self.comparison.df2_unq_rows, self.comparison.intersect_rows, on='store_id', how='inner')
-        dupe_row_in_src_count = dupe_row_in_src.shape[0]
-        dupe_row_in_tgt = dupe_row_in_tgt.shape[0]
         spaces_ignored = self.comparison.ignore_spaces
-
         df_col_with_uneq_values_types = pd.DataFrame.from_dict(self.comparison.column_stats)
         all_mismatch = self.comparison.all_mismatch()
 
@@ -80,7 +83,9 @@ class MakeMyReport:
             html_report = html_report.replace("#Summary Chart#", summary_chart_data.__str__())
             html_report = html_report.replace("#Row Summary#", row_summary_data.__str__())
             html_report = html_report.replace("#Column Summary#", col_summary_data.__str__())
-
+            html_report = html_report.replace("#duplicate_flag_src#", 'Yes' if dupe_row_in_src_count > 0 else 'No' )
+            html_report = html_report.replace("#duplicate_flag_tgt#", 'Yes' if dupe_row_in_tgt_count > 0 else 'No' )
+            html_report = html_report.replace("#spaces_ignored#", spaces_ignored.__str__())
             output_report_file.write(html_report)
 
 

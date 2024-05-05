@@ -8,6 +8,8 @@ class InitConfigs:
         self.src_detail = config_df['Src_Detail'].values[0]
         self.tgt_detail = config_df['Tgt_Detail'].values[0]
         self.compare_keys = config_df['Compare_Keys'].values[0]
+        self.join_col_list = self.compare_keys.split(',')
+
 
 
 

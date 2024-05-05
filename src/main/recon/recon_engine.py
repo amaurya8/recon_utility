@@ -21,7 +21,7 @@ init_configs = recon_init.InitConfigs(config_df)
 input_src_df = pd.read_csv(src_input_base_path + "/" + config_df['Src_Detail'].values[0])
 input_tgt_df = pd.read_csv(tgt_input_base_path + '/' + config_df['Tgt_Detail'].values[0])
 
-comparison = datacompy.Compare(input_src_df, input_tgt_df, join_columns =  ['Store_ID'])
+comparison = datacompy.Compare(input_src_df, input_tgt_df, join_columns =  init_configs.join_col_list)
 report_obj = report.MakeMyReport(comparison, input_src_df, input_tgt_df, init_configs)
 report_obj.recon_report()
 print('## Recon Completed ...! ##')
