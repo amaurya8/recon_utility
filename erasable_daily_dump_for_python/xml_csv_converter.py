@@ -21,17 +21,20 @@ def xml_to_csv(xml_file, csv_file):
     with open(csv_file, 'w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
 
-        # Get all records from XML
-        rows = [flatten_element(elem) for elem in root]
+        # Collect all records from XML
+        records = []
+        for elem in root:
+            record = flatten_element(elem)
+            records.append(record)
 
-        if rows:
+        if records:
             # Write headers
-            headers = sorted(set().union(*(row.keys() for row in rows)))
+            headers = sorted(set().union(*(record.keys() for record in records)))
             writer.writerow(headers)
 
             # Write rows
-            for row in rows:
-                writer.writerow([row.get(header, '') for header in headers])
+            for record in records:
+                writer.writerow([record.get(header, '') for header in headers])
 
 if __name__ == "__main__":
     xml_file = 'input.xml'  # Path to your XML file
