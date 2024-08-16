@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
-import csv
+import pandas as pd
+
 
 def flatten_element(elem, parent_path='', sep='_'):
     """Flatten XML element into a dictionary."""
@@ -12,32 +13,34 @@ def flatten_element(elem, parent_path='', sep='_'):
             items[path] = child.text
     return items
 
-def xml_to_csv(xml_file, csv_file):
+
+def xml_to_dataframe(xml_file):
     # Parse the XML file
     tree = ET.parse(xml_file)
     root = tree.getroot()
 
-    # Prepare CSV file for writing
-    with open(csv_file, 'w', newline='', encoding='utf-8') as file:
-        writer = csv.writer(file)
+    # Collect all records from XML
+    records = [flatten_element(elem) for elem in root]
 
-        # Collect all records from XML
-        records = []
-        for elem in root:
-            record = flatten_element(elem)
-            records.append(record)
+    # Create a DataFrame
+    df = pd.DataFrame(records)
 
-        if records:
-            # Write headers
-            headers = sorted(set().union(*(record.keys() for record in records)))
-            writer.writerow(headers)
+    return df
 
-            # Write rows
-            for record in records:
-                writer.writerow([record.get(header, '') for header in headers])
+
+def save_dataframe_to_csv(df, csv_file):
+    # Save DataFrame to CSV
+    df.to_csv(csv_file, index=False, encoding='utf-8')
+
 
 if __name__ == "__main__":
     xml_file = 'input.xml'  # Path to your XML file
     csv_file = 'output.csv'  # Path to the output CSV file
-    xml_to_csv(xml_file, csv_file)
+
+    # Convert XML to DataFrame
+    df = xml_to_dataframe(xml_file)
+
+    # Save DataFrame to CSV
+    save_dataframe_to_csv(df, csv_file)
+
     print(f'Converted {xml_file} to {csv_file}')
