@@ -1,43 +1,40 @@
-import json
+import xml.etree.ElementTree as ET
 import csv
 
-def flatten_json(y):
-    """Flatten nested JSON into a flat dictionary."""
-    def flatten(x, name=''):
-        if type(x) is dict:
-            for a in x:
-                flatten(x[a], name + a + '_')
-        elif type(x) is list:
-            i = 0
-            for a in x:
-                flatten(a, name + str(i) + '_')
-                i += 1
+def flatten_element(elem, parent_path='', sep='_'):
+    """Flatten XML element into a dictionary."""
+    items = {}
+    for child in elem:
+        path = f"{parent_path}{sep}{child.tag}" if parent_path else child.tag
+        if list(child):
+            items.update(flatten_element(child, path, sep))
         else:
-            out[name[:-1]] = x
+            items[path] = child.text
+    return items
 
-    out = {}
-    flatten(y)
-    return out
+def xml_to_csv(xml_file, csv_file):
+    # Parse the XML file
+    tree = ET.parse(xml_file)
+    root = tree.getroot()
 
-def json_to_csv(json_file, csv_file):
-    # Load JSON data from file
-    with open(json_file, 'r', encoding='utf-8') as file:
-        data = json.load(file)
-
-    # Flatten the JSON data
-    flat_data = [flatten_json(record) for record in data]
-
-    # Write to CSV
+    # Prepare CSV file for writing
     with open(csv_file, 'w', newline='', encoding='utf-8') as file:
-        if flat_data:
+        writer = csv.writer(file)
+
+        # Get all records from XML
+        rows = [flatten_element(elem) for elem in root]
+
+        if rows:
             # Write headers
-            writer = csv.DictWriter(file, fieldnames=flat_data[0].keys())
-            writer.writeheader()
+            headers = sorted(set().union(*(row.keys() for row in rows)))
+            writer.writerow(headers)
+
             # Write rows
-            writer.writerows(flat_data)
+            for row in rows:
+                writer.writerow([row.get(header, '') for header in headers])
 
 if __name__ == "__main__":
-    json_file = 'input.json'  # Path to your JSON file
+    xml_file = 'input.xml'  # Path to your XML file
     csv_file = 'output.csv'  # Path to the output CSV file
-    json_to_csv(json_file, csv_file)
-    print(f'Converted {json_file} to {csv_file}')
+    xml_to_csv(xml_file, csv_file)
+    print(f'Converted {xml_file} to {csv_file}')
