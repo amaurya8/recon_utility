@@ -1,0 +1,30 @@
+recon_utility/
+│── recon_main.py               # Main entry point
+│── config_loader.py            # Reads configuration from Excel
+│── db_connector.py             # Handles database connections
+│── data_fetcher.py             # Fetches data from files or databases
+│── recon_engine.py             # Performs data reconciliation
+│── report_generator.py         # Generates reconciliation reports
+│── requirements.txt            # Dependencies (pandas, datacompy, pyodbc, cx_Oracle)
+│── resources/
+│   ├── Driver_Config.xlsx      # Configuration file
+│   ├── queries/                # SQL query files for DB sources
+│   │   ├── source_query.sql
+│   │   ├── target_query.sql
+│   ├── src_input_files/        # Source files (CSV, Excel)
+│   │   ├── Stores.csv
+│   ├── tgt_input_files/        # Target files (CSV, Excel)
+│   │   ├── Stores_new.csv
+│── tests/                      # Unit tests
+│   ├── test_config_loader.py
+│   ├── test_data_fetcher.py
+│   ├── test_recon_engine.py
+│── README.md                   # Documentation
+
+
+	recon_main.py → Root of the project (entry point).
+	•	Modules (config_loader.py, db_connector.py, data_fetcher.py, recon_engine.py, report_generator.py) → Inside the root directory.
+	•	resources/ → Store configuration (Driver_Config.xlsx), SQL queries, and input data (CSV/Excel).
+	•	tests/ → Write unit tests to validate each module.
+	•	requirements.txt → List dependencies for easy installation (pip install -r requirements.txt).
+
