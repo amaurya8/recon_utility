@@ -1,6 +1,7 @@
 import pandas as pd
-import fsspec
 from azure.identity import ClientSecretCredential
+from adlfs import AzureBlobFileSystem
+import fsspec
 
 def read_all_files_from_adls_folder(
     storage_account, container_name, folder_path,
@@ -8,31 +9,31 @@ def read_all_files_from_adls_folder(
     file_type="csv"  # can be 'csv' or 'parquet'
 ):
     try:
-        print("Authenticating using service principal...")
-
+        # Create the service principal credential
         credential = ClientSecretCredential(
             tenant_id=tenant_id,
             client_id=client_id,
             client_secret=client_secret
         )
 
-        print(f"Creating filesystem for storage account: {storage_account}")
-        fs = fsspec.filesystem("abfs", account_name=storage_account, credential=credential)
+        # Use adlfs directly for AzureBlobFileSystem
+        fs = AzureBlobFileSystem(
+            account_name=storage_account,
+            credential=credential
+        )
 
-        folder_path = folder_path.strip("/")  # Clean up slashes
-        abfs_path = f"abfs://{container_name}/{folder_path}"
-        print(f"Looking for files at: {abfs_path}/*.{file_type}")
+        folder_path = folder_path.strip('/')
+        full_path = f"{container_name}/{folder_path}"
 
-        file_list = fs.glob(f"{abfs_path}/*.{file_type}")
-        print(f"Files found: {file_list}")
+        file_list = fs.glob(f"{full_path}/*.{file_type}")
+        print(f"Found files: {file_list}")
 
         if not file_list:
-            print("⚠️ No files found. Double-check the path, container, or file type.")
+            print("No files found.")
             return pd.DataFrame()
 
         dataframes = []
         for file in file_list:
-            print(f"Reading file: {file}")
             with fs.open(file, "rb") as f:
                 if file_type == "csv":
                     df = pd.read_csv(f)
@@ -46,5 +47,5 @@ def read_all_files_from_adls_folder(
         return combined_df
 
     except Exception as e:
-        print(f"❌ Error reading folder from ADLS: {e}")
+        print(f"Error reading folder from ADLS: {e}")
         return pd.DataFrame()
