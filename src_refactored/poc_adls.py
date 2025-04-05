@@ -1,43 +1,46 @@
 import pandas as pd
-from azure.storage.filedatalake import DataLakeServiceClient
-from io import BytesIO
-pip install azure-storage-file-datalake pandas pyarrow
-def fetch_adls_folder_to_df(account_name: str, account_key: str, file_system: str, folder_path: str, file_type: str = "csv") -> pd.DataFrame:
+import fsspec
+from azure.identity import ClientSecretCredential
+
+def read_all_files_from_adls_folder(
+    storage_account, container_name, folder_path,
+    tenant_id, client_id, client_secret,
+    file_type="csv"  # can be 'csv' or 'parquet'
+):
     try:
-        service_client = DataLakeServiceClient(
-            account_url=f"https://{account_name}.dfs.core.windows.net",
-            credential=account_key
+        # Authenticate using the service principal
+        credential = ClientSecretCredential(
+            tenant_id=tenant_id,
+            client_id=client_id,
+            client_secret=client_secret
         )
 
-        file_system_client = service_client.get_file_system_client(file_system)
-        paths = file_system_client.get_paths(path=folder_path)
+        # Create the filesystem
+        fs = fsspec.filesystem("abfs", account_name=storage_account, credential=credential)
 
-        all_dfs = []
+        # List all files in the folder
+        full_folder_path = f"{container_name}/{folder_path}".rstrip("/")
+        file_list = fs.glob(f"{full_folder_path}/*.{file_type}")
 
-        for path in paths:
-            if not path.is_directory:
-                file_client = file_system_client.get_file_client(path.name)
-                download = file_client.download_file()
-                file_content = BytesIO(download.readall())
-
-                if file_type == "csv":
-                    df = pd.read_csv(file_content)
-                elif file_type == "json":
-                    df = pd.read_json(file_content, lines=True)
-                elif file_type == "parquet":
-                    df = pd.read_parquet(file_content)
-                else:
-                    raise ValueError(f"Unsupported file type: {file_type}")
-
-                all_dfs.append(df)
-
-        if all_dfs:
-            combined_df = pd.concat(all_dfs, ignore_index=True)
-            return combined_df
-        else:
-            print("No files found in folder.")
+        if not file_list:
+            print("No files found.")
             return pd.DataFrame()
 
+        # Read and combine all files
+        dataframes = []
+        for file in file_list:
+            with fs.open(file, "rb") as f:
+                if file_type == "csv":
+                    df = pd.read_csv(f)
+                elif file_type == "parquet":
+                    df = pd.read_parquet(f)
+                else:
+                    raise ValueError("Unsupported file type")
+                dataframes.append(df)
+
+        combined_df = pd.concat(dataframes, ignore_index=True)
+        return combined_df
+
     except Exception as e:
-        print(f"Error reading files from ADLS folder: {e}")
+        print(f"Error reading folder from ADLS: {e}")
         return pd.DataFrame()
