@@ -8,30 +8,31 @@ def read_all_files_from_adls_folder(
     file_type="csv"  # can be 'csv' or 'parquet'
 ):
     try:
-        # Authenticate using the service principal
+        print("Authenticating using service principal...")
+
         credential = ClientSecretCredential(
             tenant_id=tenant_id,
             client_id=client_id,
             client_secret=client_secret
         )
 
-        # Create the filesystem
+        print(f"Creating filesystem for storage account: {storage_account}")
         fs = fsspec.filesystem("abfs", account_name=storage_account, credential=credential)
 
-        # Ensure folder_path does not start with a slash
-        folder_path = folder_path.lstrip("/")
+        folder_path = folder_path.strip("/")  # Clean up slashes
+        abfs_path = f"abfs://{container_name}/{folder_path}"
+        print(f"Looking for files at: {abfs_path}/*.{file_type}")
 
-        # Proper full path with abfs:// prefix
-        abfs_path = f"abfs://{container_name}/{folder_path}".rstrip("/")
         file_list = fs.glob(f"{abfs_path}/*.{file_type}")
+        print(f"Files found: {file_list}")
 
         if not file_list:
-            print("No files found.")
+            print("⚠️ No files found. Double-check the path, container, or file type.")
             return pd.DataFrame()
 
-        # Read and combine all files
         dataframes = []
         for file in file_list:
+            print(f"Reading file: {file}")
             with fs.open(file, "rb") as f:
                 if file_type == "csv":
                     df = pd.read_csv(f)
@@ -45,5 +46,5 @@ def read_all_files_from_adls_folder(
         return combined_df
 
     except Exception as e:
-        print(f"Error reading folder from ADLS: {e}")
+        print(f"❌ Error reading folder from ADLS: {e}")
         return pd.DataFrame()
