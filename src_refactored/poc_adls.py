@@ -18,9 +18,12 @@ def read_all_files_from_adls_folder(
         # Create the filesystem
         fs = fsspec.filesystem("abfs", account_name=storage_account, credential=credential)
 
-        # List all files in the folder
-        full_folder_path = f"{container_name}/{folder_path}".rstrip("/")
-        file_list = fs.glob(f"{full_folder_path}/*.{file_type}")
+        # Ensure folder_path does not start with a slash
+        folder_path = folder_path.lstrip("/")
+
+        # Proper full path with abfs:// prefix
+        abfs_path = f"abfs://{container_name}/{folder_path}".rstrip("/")
+        file_list = fs.glob(f"{abfs_path}/*.{file_type}")
 
         if not file_list:
             print("No files found.")
