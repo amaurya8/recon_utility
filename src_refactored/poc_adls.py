@@ -11,10 +11,13 @@ def read_all_files_from_adls_folder_with_connection_string(
         # Clean up the path and list matching files
         folder_path = folder_path.strip("/")
         full_path = f"{container_name}/{folder_path}"
-        file_list = fs.glob(f"{full_path}/*.{file_type}")
+        file_list = fs.glob(f"{full_path}/**/*.{file_type}")  # recursive search
+
+        # Filter out zero-byte files
+        file_list = [f for f in file_list if fs.info(f)['size'] > 0]
 
         if not file_list:
-            print("No files found.")
+            print("No valid (non-empty) files found.")
             return pd.DataFrame()
 
         # Read and combine files
