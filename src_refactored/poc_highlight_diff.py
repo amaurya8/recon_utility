@@ -23,3 +23,10 @@ def highlight_diff(self, row):
             styles[i + 1] = 'background-color: #FF6347'
 
     return styles
+
+
+
+import numpy as np
+
+def standardize_nulls(df):
+    return df.replace(['', ' ', None], np.nan)
