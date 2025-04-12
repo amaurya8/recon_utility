@@ -30,3 +30,6 @@ import numpy as np
 
 def standardize_nulls(df):
     return df.replace(['', ' ', None], np.nan)
+
+def fill_missing_as_blank(df):
+    return df.fillna('').replace([None], '')
