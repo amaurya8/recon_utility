@@ -33,3 +33,6 @@ def standardize_nulls(df):
 
 def fill_missing_as_blank(df):
     return df.fillna('').replace([None], '')
+
+def fill_all_missing_as_blank(df):
+    return df.replace([None, np.nan, ' '], '').fillna('')
