@@ -36,3 +36,19 @@ def fill_missing_as_blank(df):
 
 def fill_all_missing_as_blank(df):
     return df.replace([None, np.nan, ' '], '').fillna('')
+
+import numpy as np
+import pandas as pd
+
+if pd.isna(val1) and pd.isna(val2):
+    continue
+elif (pd.isna(val1) != pd.isna(val2)):
+    # One is NaN, the other is not
+    mismatch = True
+elif isinstance(val1, (np.ndarray, list)) or isinstance(val2, (np.ndarray, list)):
+    mismatch = not np.array_equal(val1, val2)
+else:
+    mismatch = val1 != val2
+
+if mismatch:
+    # highlight or flag
