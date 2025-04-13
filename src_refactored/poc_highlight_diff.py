@@ -68,3 +68,28 @@ for col in common_columns:
 
 
 
+
+def standardize_column(col):
+    try:
+        # Try converting numeric columns to float
+        if pd.api.types.is_numeric_dtype(col):
+            col = col.astype(float)
+    except Exception as e:
+        print(f"Warning: Failed to convert column to float due to: {e}")
+
+    try:
+        # Convert to string and normalize
+        col = (
+            col.astype(str)
+            .replace(['nan', 'None'], '')
+            .replace({pd.NA: '', None: ''})
+            .fillna('')
+            .str.rstrip('0').str.rstrip('.')  # Remove trailing .0 in floats like 123.0 → 123
+        )
+    except Exception as e:
+        print(f"Warning: Failed during string normalization: {e}")
+
+    return col
+
+
+
