@@ -52,3 +52,7 @@ else:
 
 if mismatch:
     # highlight or flag
+
+    for col in common_columns:
+        source_df[col] = source_df[col].astype(str)
+        target_df[col] = target_df[col].astype(str)
