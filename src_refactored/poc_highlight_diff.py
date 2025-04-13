@@ -53,6 +53,18 @@ else:
 if mismatch:
     # highlight or flag
 
-    for col in common_columns:
-        source_df[col] = source_df[col].astype(str)
-        target_df[col] = target_df[col].astype(str)
+for col in common_columns:
+    source_df[col] = source_df[col].astype(str)
+    target_df[col] = target_df[col].astype(str)
+
+def standardize_column(col):
+    return col.astype(str).replace(['nan', 'None'], '').replace({pd.NA: '', None: ''}).fillna('')
+
+common_columns = source_df.columns.intersection(target_df.columns)
+
+for col in common_columns:
+    source_df[col] = standardize_column(source_df[col])
+    target_df[col] = standardize_column(target_df[col])
+
+
+
