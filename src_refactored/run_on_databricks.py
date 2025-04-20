@@ -34,3 +34,11 @@ print("sys.path:", sys.path)
 print("Files in directory:", os.listdir("/dbfs/tmp/my_project/my_project"))
 
 os.chdir("/dbfs/tmp/my_project/my_project")
+
+# If your requirements.txt is at /dbfs/tmp/my_project/requirements.txt
+%pip install -r /dbfs/tmp/my_project/requirements.txt
+
+import subprocess
+
+requirements_path = "/dbfs/tmp/my_project/requirements.txt"
+subprocess.check_call(["pip", "install", "-r", requirements_path])
