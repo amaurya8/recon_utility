@@ -42,3 +42,17 @@ import subprocess
 
 requirements_path = "/dbfs/tmp/my_project/requirements.txt"
 subprocess.check_call(["pip", "install", "-r", requirements_path])
+
+#Creating requirement.txt:
+windows:
+
+.\venv\Scripts\activate
+
+pip freeze > requirements.txt
+
+OR
+
+pip install pipreqs
+pipreqs /path/to/your/project
+
+
