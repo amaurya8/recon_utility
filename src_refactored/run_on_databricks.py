@@ -18,3 +18,10 @@ main_func()
 
 # Run the recon_main.py module directly
 runpy.run_path("/dbfs/tmp/my_project/my_project/recon_main.py", run_name="__main__")
+
+
+import os
+
+path = "/dbfs/tmp/my_project/my_project/"
+files = os.listdir(path)
+print("Files in path:", files)
