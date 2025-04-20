@@ -25,3 +25,10 @@ import os
 path = "/dbfs/tmp/my_project/my_project/"
 files = os.listdir(path)
 print("Files in path:", files)
+
+import os
+import sys
+
+print("Current working directory:", os.getcwd())
+print("sys.path:", sys.path)
+print("Files in directory:", os.listdir("/dbfs/tmp/my_project/my_project"))
