@@ -32,3 +32,5 @@ import sys
 print("Current working directory:", os.getcwd())
 print("sys.path:", sys.path)
 print("Files in directory:", os.listdir("/dbfs/tmp/my_project/my_project"))
+
+os.chdir("/dbfs/tmp/my_project/my_project")
