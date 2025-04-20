@@ -84,7 +84,7 @@ def standardize_column(col):
             .replace(['nan', 'None'], '')
             .replace({pd.NA: '', None: ''})
             .fillna('')
-            .str.rstrip('0').str.rstrip('.')  # Remove trailing .0 in floats like 123.0 → 123
+            .str.rstrip('.0')  # Remove trailing .0 in floats like 123.0 → 123
         )
     except Exception as e:
         print(f"Warning: Failed during string normalization: {e}")
