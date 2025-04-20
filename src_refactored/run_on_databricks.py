@@ -15,3 +15,6 @@ sys.path.append("/dbfs/tmp/my_project/my_project")  # Add to module search path
 # Now you can import and run your code
 from main import main_func
 main_func()
+
+# Run the recon_main.py module directly
+runpy.run_path("/dbfs/tmp/my_project/my_project/recon_main.py", run_name="__main__")
