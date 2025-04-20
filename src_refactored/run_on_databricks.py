@@ -55,4 +55,9 @@ OR
 pip install pipreqs
 pipreqs /path/to/your/project
 
+# in notebooks:
+
+# Databricks notebook cell
+%pip install -r /dbfs/tmp/my_project/requirements.txt
+
 
